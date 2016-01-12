@@ -11,6 +11,7 @@ import ru.tsystems.javaschool.kuzmenkov.logiweb.service.FreightServiceBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -45,34 +46,53 @@ public class DriverManagedBean {
         driverInfo.setCurrentDriverStatus(DriverStatus.DRIVING);
     }
 
-    public void initDriver(Integer personalNumber) {
+    public String initDriver(Integer personalNumber) {
         driverInfo = driverServiceBean.getDriverInfo(personalNumber);
+
+        return "home";
     }
 
-    public void startDriverShift(Integer personalNumber) {
+    public String startDriverShift(Integer personalNumber) {
         LOGGER.info("Start shift for driver with number: " + personalNumber);
         driverServiceBean.startShiftForDriver(personalNumber);
         driverInfo.setCurrentDriverStatus(DriverStatus.REST_IN_SHIFT);
+
+        return "home";
     }
 
-    public void endDriverShift(Integer personalNumber) {
-        driverServiceBean.endShiftForDriver(personalNumber);
-        driverInfo.setCurrentDriverStatus(DriverStatus.FREE);
+    public String endDriverShift(Integer personalNumber) {
+        try {
+            LOGGER.info("End shift for current driver.");
+            driverServiceBean.endShiftForDriver(personalNumber);
+            driverInfo.setCurrentDriverStatus(DriverStatus.FREE);
+
+        } catch (Exception e) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sorry, the driver is already in that status!", null);
+            FacesContext.getCurrentInstance().addMessage("driverStatusForm", message);
+        }
+
+        return "home";
     }
 
-    public void setStatusRestingForDriver(Integer personalNumber) {
+    public String setStatusRestingForDriver(Integer personalNumber) {
         driverServiceBean.setStatusRestingForDriver(personalNumber);
         driverInfo.setCurrentDriverStatus(DriverStatus.REST_IN_SHIFT);
+
+        return "home";
     }
 
-    public void setStatusPickedUpForFreight(Integer freightId) {
+    public String setStatusPickedUpForFreight(Integer freightId) {
         setStatusToFreight(freightId, FreightStatus.PICKED_UP);
         freightServiceBean.setStatusPickedUpForFreight(freightId);
+
+        return "home";
     }
 
-    public void setStatusDeliverForFreightAndEndCurrentOrderIfPossible(Integer freightId) {
+    public String setStatusDeliverForFreightAndEndCurrentOrderIfPossible(Integer freightId, Integer driverPersonalNumber) {
         setStatusToFreight(freightId, FreightStatus.DELIVERED);
-        freightServiceBean.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(freightId);
+        freightServiceBean.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(freightId, driverPersonalNumber);
+
+        return "home";
     }
 
     private void setStatusToFreight(Integer freightId, FreightStatus newStatus) {

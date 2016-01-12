@@ -46,5 +46,7 @@ public interface DriverWebService {
     void setStatusPickUpForFreight(@WebParam(name = "freightId") Integer freightId);
 
     @WebMethod
-    void setStatusDeliverForFreightAndEndCurrentOrderIfPossible(@WebParam(name = "freightId") Integer freightId);
+    void setStatusDeliverForFreightAndEndCurrentOrderIfPossible(
+            @WebParam(name = "freightId") Integer freightId,
+            @WebParam(name = "driverPersonalNumber") Integer driverPersonalNumber);
 }

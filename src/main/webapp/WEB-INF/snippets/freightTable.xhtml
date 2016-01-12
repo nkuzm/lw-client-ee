@@ -63,15 +63,13 @@
 								<h:commandButton id="pickedup_#{cid}"
 									action="#{driverBean.setStatusPickedUpForFreight(cid)}"
 									value="Pickup" styleClass="button round cargoAction success">
-									<f:ajax execute="pickedup_#{cid}" render="@all"></f:ajax>
 								</h:commandButton>
 							</c:when>
 							<c:when
 								test="#{waypoint.wayPointStatus == 'DELIVER' and waypoint.freight.freightStatus == 'PICKED_UP'}">
 								<h:commandButton id="deliver_#{cid}" value="Deliver"
-									action="#{driverBean.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(cid)}"
+									action="#{driverBean.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(cid, identity.account.loginName)}"
 									styleClass="button round cargoAction success">
-									<f:ajax execute="deliver_#{cid}" render="@all"></f:ajax>
 								</h:commandButton>
 							</c:when>
 							<c:otherwise>

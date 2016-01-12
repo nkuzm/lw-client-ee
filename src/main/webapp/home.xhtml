@@ -40,16 +40,16 @@
                     <p:separator/>
 
 
-                    <ui:include src="driverInfo.xhtml"/>
+                    <ui:include src="WEB-INF/snippets/driverInfo.xhtml"/>
                     <p:separator/>
                     <!-- Buttons for shift and status control -->
 
-                    <ui:include src="driverStatusControl.xhtml" />
+                    <ui:include src="WEB-INF/snippets/driverStatusControl.xhtml" />
                     <p:separator/>
 
                     <!-- Table with freight data -->
                     <c:if test="#{driverBean.driverInfo.currentDriverStatus != 'FREE'}">
-                        <ui:include src="/freightTable.xhtml" />
+                        <ui:include src="/WEB-INF/snippets/freightTable.xhtml" />
                     </c:if>
 
                     <p:separator />

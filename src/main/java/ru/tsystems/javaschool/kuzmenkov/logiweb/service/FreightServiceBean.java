@@ -25,12 +25,12 @@ public class FreightServiceBean {
         driverWebService.setStatusPickUpForFreight(freightId);
     }
 
-    public void setStatusDeliverForFreightAndEndCurrentOrderIfPossible(Integer freightId) {
+    public void setStatusDeliverForFreightAndEndCurrentOrderIfPossible(Integer freightId, Integer driverPersonalNumber) {
         factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(DriverWebService.class);
         factory.setAddress(WEB_SERVICE_URL);
         driverWebService = (DriverWebService) factory.create();
 
-        driverWebService.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(freightId);
+        driverWebService.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(freightId, driverPersonalNumber);
     }
 }
