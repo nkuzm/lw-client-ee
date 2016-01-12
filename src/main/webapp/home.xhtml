@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <title>Driver SOAP UI</title>
+    <!--<h:outputStylesheet library="css" name="style.css"  />-->
+    <h:outputStylesheet name="grid/grid.css" library="primefaces" />
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+</h:head>
+
+<h:body>
+    <pm:page id="list">
+        <div align="l"><pm:header title="Driver@LogiWeb" swatch="b"/></div>
+        <pm:content>
+            <p:fragment rendered="#{identity.loggedIn}">#{driverBean.initDriver(identity.account.loginName)}</p:fragment>
+            <p:fragment rendered="#{identity.loggedIn}">
+                <div class="container">
+
+                    <p:separator/>
+                    <div align="middle">
+                        <h5><i class="fa fa-fw fa-clock-o"/> <p:clock pattern="HH:mm:ss - dd.MM.yyyy" /></h5>
+                    </div>
+
+                    <p:separator />
+                    <p:separator />
+
+                    <h4><i class="fa fa-fw fa-user"/> Welcome #{identity.account.firstName} #{driverBean.driverInfo.lastName}</h4>
+
+                    <p:separator/>
+                    <h1 class="text-center">Driver services</h1>
+                    <p:separator/>
+
+
+                    <ui:include src="driverInfo.xhtml"/>
+                    <p:separator/>
+                    <!-- Buttons for shift and status control -->
+
+                    <ui:include src="driverStatusControl.xhtml" />
+                    <p:separator/>
+
+                    <!-- Table with freight data -->
+                    <c:if test="#{driverBean.driverInfo.currentDriverStatus != 'FREE'}">
+                        <ui:include src="/freightTable.xhtml" />
+                    </c:if>
+
+                    <p:separator />
+                    <p:separator />
+
+                    <h:form>
+                        <h:commandButton id="logout" value="Log out" action="#{identity.logout}" />
+                    </h:form>
+                </div>
+            </p:fragment>
+
+            <ui:include src="login.xhtml" />
+
+        </pm:content>
+    </pm:page>
+
+</h:body>
+
+</html>
