@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<!-- Driver status buttons -->
+<p:fragment>
+
+	<c:set var="dStatus" value="#{driverBean.driverInfo.currentDriverStatus}" />
+
+	<c:if test="#{dStatus == 'FREE'}"></c:if>
+	<div class="small-12 columns">
+		<h:form>
+			<c:choose>
+				<c:when test="#{dStatus == 'REST_IN_SHIFT'}">
+					<h:commandButton id="stDriving"
+						action="#{driverBean.setStatusDrivingForDriver(identity.account.loginName)}"
+						value="Change status to 'Driving'" styleClass="button">
+						<f:ajax execute="stDriving" render="@all"></f:ajax>
+					</h:commandButton>
+				</c:when>
+				<c:when test="#{dStatus == 'DRIVING'}">
+					<h:commandButton id="stRest" value="Change status to 'Resting'"
+						action="#{driverBean.setStatusRestingForDriver(identity.account.loginName)}"
+						styleClass="button info">
+						<f:ajax execute="stRest" render="@all"></f:ajax>
+					</h:commandButton>
+				</c:when>
+			</c:choose>
+		</h:form>
+	</div>
+
+	<!-- Shift begin\end -->
+	<div class="small-12 columns">
+		<h:form>
+			<c:choose>
+				<c:when test="#{dStatus == 'FREE'}">
+					<h:commandButton id="startShift"
+						action="#{driverBean.startDriverShift(identity.account.loginName)}"
+						value="Beggin new shift" styleClass="button">
+						<f:ajax execute="startShift" render="@all"></f:ajax>
+					</h:commandButton>
+				</c:when>
+				<c:when test="#{dStatus != 'FREE'}">
+					<h:commandButton id="endShift" value="End shift"
+						action="#{driverBean.endDriverShift(identity.account.loginName)}"
+						styleClass="button">
+						<f:ajax execute="endShift" render="@all"></f:ajax>
+					</h:commandButton>
+				</c:when>
+			</c:choose>
+		</h:form>
+	</div>
+	<!-- /Shift begin\end -->
+	
+
+<!-- /Driver status buttons -->
+</p:fragment>
+</html>

@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<p:fragment>
+<div class="home_box">
+<h:form>
+
+		<h:dataTable var="waypoint" value="#{driverBean.driverInfo.orderWayPoints}"
+					 styleClass="simpletablestyle" headerClass="headerTable" rowClasses="rowTable"
+					 columnClasses="columnTable, firstColumnTable, secondColumnTable, thirdColumnTable"
+					 border="1">
+			<h:column>
+				<f:facet name="header">Freight ID</f:facet>
+
+				<div class="name_format">#{waypoint.freight.freightId}</div>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Title</f:facet>
+
+				<div class="name_format">#{waypoint.freight.description}</div>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Operation with freight</f:facet>
+
+				<div class="name_format"> #{waypoint.wayPointStatus}</div>
+			</h:column>
+		</h:dataTable>
+
+	<p:separator/>
+
+	<table id="cargoTable">
+		<thead>
+			<tr>
+				<th>Freight ID</th>
+				&#160;
+				<th>City</th>
+				&#160;
+				<th>Status/Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="waypoint"
+				items="#{driverBean.driverInfo.orderWayPoints}">
+				<tr>
+					<td><h:outputText value="#{waypoint.freight.freightId}" /></td>
+
+					<td><c:choose>
+							<c:when test="#{waypoint.wayPointStatus == 'PICK_UP'}">
+								<h:outputText value="#{waypoint.freight.cityFromFK.name}" />
+							</c:when>
+							<c:when test="#{waypoint.wayPointStatus == 'DELIVER'}">
+								<h:outputText value="#{waypoint.freight.cityToFK.name}" />
+							</c:when>
+						</c:choose></td>
+
+					<td><c:set var="cid" value="#{waypoint.freight.freightId}" /> <c:choose>
+							<c:when
+								test="#{waypoint.wayPointStatus == 'PICK_UP' and waypoint.freight.freightStatus == 'WAITING_FOR_PICK_UP'}">
+								<h:commandButton id="pickedup_#{cid}"
+									action="#{driverBean.setStatusPickedUpForFreight(cid)}"
+									value="Pickup" styleClass="button round cargoAction success">
+									<f:ajax execute="pickedup_#{cid}" render="@all"></f:ajax>
+								</h:commandButton>
+							</c:when>
+							<c:when
+								test="#{waypoint.wayPointStatus == 'DELIVER' and waypoint.freight.freightStatus == 'PICKED_UP'}">
+								<h:commandButton id="deliver_#{cid}" value="Deliver"
+									action="#{driverBean.setStatusDeliverForFreightAndEndCurrentOrderIfPossible(cid)}"
+									styleClass="button round cargoAction success">
+									<f:ajax execute="deliver_#{cid}" render="@all"></f:ajax>
+								</h:commandButton>
+							</c:when>
+							<c:otherwise>
+								<h:outputText value="#{waypoint.freight.freightStatus}" />
+							</c:otherwise>
+						</c:choose></td>
+
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</h:form>
+</div>
+</p:fragment>
+</html>

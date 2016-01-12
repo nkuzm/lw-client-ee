@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+<p:fragment>
+<div class="panel callout radius">
+	<h4>Driver info</h4>
+	Personal number #
+	<h:outputText value="#{driverBean.driverInfo.personalNumber}" />
+	<br />
+
+	<h:outputText value="#{driverBean.driverInfo.firstName}" />
+	&#140;
+	<h:outputText value="#{driverBean.driverInfo.lastName}" />
+	<br />
+	 Status:
+	<h:outputText id="driverStatus"
+		value="#{driverBean.driverInfo.currentDriverStatus}" />
+
+</div>
+</p:fragment>
+</html>
